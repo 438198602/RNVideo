@@ -98,16 +98,22 @@ export default class VideoPlayer extends React.Component {
                 {
                     this.state.hasCover && this.state.isShowVideoCover ?
                         <TouchableHighlight style={defaultStyle} onPress={this._playVideo}>
-                            <Image
-                                style={defaultStyle}
-                                source={{ uri: this.state.videoCover }}
-                            />
+                            <View style={defaultStyle}>
+                                <Image
+                                    style={defaultStyle}
+                                    source={{ uri: this.state.videoCover }}
+                                />
+                                <Image
+                                    style={styles.playButton}
+                                    source={require('../image/icon_video_play.png')}
+                                />
+                            </View>
                         </TouchableHighlight> : null
                 }
                 {/* 视频缓冲显示Loading */}
                 {
                     this.state.isShowVideoLoading && !this.state.isPaused ?
-                        <View style={defaultStyle}>
+                        <View style={[defaultStyle, { zIndex: 2 }]}>
                             <ActivityIndicator color="#77A9FD" size="large" />
                         </View> : null
                 }
@@ -206,7 +212,7 @@ export default class VideoPlayer extends React.Component {
                         null :
                         this.props.isShowBackIcon ?
                             <TouchableOpacity
-                                style={[defaultStyle, { width: 44, height: 44 }]}
+                                style={[defaultStyle, { width: 44, height: 44, zIndex: 3 }]}
                                 onPress={this._onTapBackButton}
                             >
                                 <Image
@@ -261,29 +267,35 @@ export default class VideoPlayer extends React.Component {
                         null
                 }
                 {/* 播放暂停按钮 */}
-                <TouchableHighlight
-                    activeOpacity={1}
-                    style={{
-                        position: 'absolute',
-                        top: this.state.videoHeight / 2 - 25,
-                        left: this.state.videoWidth / 2 - 25,
-                    }}
-                    onPress={this._onTapPlayButton}
-                >
-                    {
-                        this.state.isPaused ?
-                            <Image
-                                style={styles.playButton}
-                                source={require('../image/icon_video_play.png')}
-                            /> :
-                            !this.state.isShowVideoLoading && this.state.isShowControl ?
-                                <Image
-                                    style={styles.playButton}
-                                    source={require('../image/icon_video_pause.png')}
-                                /> :
-                                <View></View>
-                    }
-                </TouchableHighlight>
+                {
+                    !this.state.isShowVideoCover ?
+                        <TouchableHighlight
+                            activeOpacity={1}
+                            style={[
+                                {
+                                    position: 'absolute',
+                                    top: this.state.videoHeight / 2 - 25,
+                                    left: this.state.videoWidth / 2 - 25,
+                                },
+                                styles.playButton
+                            ]}
+                            onPress={this._onTapPlayButton}
+                        >
+                            {
+                                this.state.isPaused ?
+                                    <Image
+                                        style={styles.playButton}
+                                        source={require('../image/icon_video_play.png')}
+                                    /> :
+                                    !this.state.isShowVideoLoading && this.state.isShowControl ?
+                                        <Image
+                                            style={styles.playButton}
+                                            source={require('../image/icon_video_pause.png')}
+                                        /> :
+                                        <View></View>
+                            }
+                        </TouchableHighlight> : null
+                }
                 {/* 清晰度切换 */}
                 {
                     this.state.isFullScreen && this.state.isDefinitionShow ?
@@ -628,6 +640,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: 50,
         height: 50,
+        borderRadius: 25,
     },
     bottomControl: {
         position: 'absolute',
