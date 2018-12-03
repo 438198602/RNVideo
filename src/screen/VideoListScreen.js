@@ -1,7 +1,7 @@
 import React from 'react';
-import { FlatList, View, Text, Image, TouchableHighlight, StyleSheet } from 'react-native';
+import { FlatList, View, Text, Image, TouchableHighlight, StyleSheet, SafeAreaView } from 'react-native';
 import Orientation from "react-native-orientation";
-import { statusBarHeight } from "../components/VideoPlayer";
+import { screenWidth, statusBarHeight } from "../components/VideoPlayer";
 
 export const videoList = [
     "http://wvideo.spriteapp.cn/video/2016/0328/56f8ec01d9bfe_wpd.mp4", "http://flv2.bn.netease.com/videolib3/1609/12/aOzvT5225/HD/movie_index.m3u8",
@@ -10,23 +10,27 @@ export const videoList = [
 ];
 
 export default class VideoListScreen extends React.Component {
-    static navigationOptions = ({ navigation }) => ({
-        headerTitle: (navigation.state.routeName === 'Mode1') ? '列表模式' : '全屏模式',
-    });
-
     constructor(props) {
         super(props);
+        this.state = {
+            headerTitle: props.navigation.state.routeName === 'Mode1' ? '列表模式' : '全屏模式',
+        };
         // 锁定纵向
         Orientation.lockToPortrait();
     }
 
     render() {
         return (
-            <FlatList
-                data={videoList}
-                renderItem={this._renderRow}
-                keyExtractor={(item) => item}
-            />
+            <SafeAreaView style={styles.container}>
+                <View style={styles.headerView}>
+                    <Text style={styles.headerText}>{this.state.headerTitle}</Text>
+                </View>
+                <FlatList
+                    data={videoList}
+                    renderItem={this._renderRow}
+                    keyExtractor={(item) => item}
+                />
+            </SafeAreaView>
         )
     }
 
@@ -55,6 +59,17 @@ export default class VideoListScreen extends React.Component {
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    headerView: {
+        width: screenWidth,
+        height: 44,
+        flexDirection: 'row',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    headerText: {
+        fontSize: 17
     },
     itemContainer: {
         flexDirection: 'row',

@@ -16,10 +16,6 @@ import Orientation from 'react-native-orientation';
 import { isIPhoneX, isSystemIOS, screenHeight, screenWidth } from "../components/VideoPlayer";
 
 export default class VideoPlayerScreen extends React.Component {
-    static navigationOptions = {
-        header: null
-    };
-
     constructor(props) {
         super(props);
         this.state = {

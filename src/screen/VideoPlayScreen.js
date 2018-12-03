@@ -5,10 +5,6 @@ import Orientation from "react-native-orientation";
 import { videoList, styles } from "./VideoListScreen";
 
 export default class VideoPlayScreen extends React.Component {
-    static navigationOptions = {
-        header: null
-    };
-
     constructor(props) {
         super(props);
         this.state = {
